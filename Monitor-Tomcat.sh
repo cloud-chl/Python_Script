@@ -21,25 +21,28 @@ TomcatMonitorLog=/app/Monitor/Tomcat-Monitor.log
 Monitor()
 {
         echo "[info]开始监控Tomcat...[$(date +'%F %H:%M:%S')]"
-        if [ $TomcatID ];then
-          TomcatServiceCode=$(curl -o $GetPageInfo -s -m 10 --connect-timeout 10 -w %{http_code} -k $WebUrl)
-          if [ $TomcatServiceCode -eq 200 ];then
-            echo "[info]页面返回码为$TomcatServiceCode,Tomcat启动成功,测试页面正常......"
+        if [ ${TomcatID} ];then
+          TomcatServiceCode=$(curl -o ${GetPageInfo} -s -m 10 --connect-timeout 10 -w %{http_code} -k ${WebUrl})
+          if [ ${TomcatServiceCode} -eq 200 ];then
+            echo "[info]页面返回码为${TomcatServiceCode},Tomcat启动成功,测试页面正常......"
           else
-            echo "[error]Tomcat页面出错,请注意......状态码为$TomcatServiceCode,错误日志已输出到$GetPageInfo"
+            echo "[error]Tomcat页面出错,请注意......状态码为${TomcatServiceCode},错误日志已输出到${GetPageInfo}"
             echo "[error]页面访问出错,开始重启Tomcat"
-            kill -9 $TomcatID
+            kill -9 ${TomcatID}
             sleep 3
     
-            $StartTomcat
+            ${StartTomcat}
           fi
         else
           echo "[error]Tomcat进程不存在!Tomcat开始自动重启..."
-          echo "[info]$StartTomcat,请稍候......"
+          echo "[info]${StartTomcat},请稍候......"
           
-          $StartTomcat
+          ${StartTomcat}
         fi
 }
 
+def main()
+  Monitor>>${TomcatMonitorLog}
 
-Monitor>>$TomcatMonitorLog
+
+main
