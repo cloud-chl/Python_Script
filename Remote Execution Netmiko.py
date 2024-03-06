@@ -11,6 +11,7 @@ def ssh_cmd(ip, port, username, password, cmd='ls -l', device_type="linux"):
                               username=username,
                               password=password,
                               device_type=device_type)
+        conn.enable()
         output = conn.send_command(cmd)
         conn.disconnect()
 
