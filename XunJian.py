@@ -46,7 +46,7 @@ def getDiskInfo():
     disk_system_free = disk_system.free / 1024 / 1024 / 1024
     disk_system_percent = disk_system.percent
 
-    disk_app = psutil.disk_usage("/app")
+    disk_app = psutil.disk_usage("/data")
     disk_app_total = disk_app.total / 1024 / 1024 / 1024
     disk_app_free = disk_app.free / 1024 / 1024 / 1024
     disk_app_percent = disk_app.percent
@@ -66,7 +66,7 @@ def data():
     content+=getSystemInfo()+"\n"+"-"*20+"\n"+getMemInfo()+"\n"+"-"*20+"\n"+getDiskInfo()+"\n"+"-"*20+"\n"+getCPUInfo()+"\n"
     return content
 
-
+"""
 def sendDingMessage(content):
     import requests
     import json
@@ -96,7 +96,31 @@ def sendDingMessage(content):
     info = requests.post(url=webhook, data=message_json, headers=header)
     # 打印返回的结果
     # print(info.text)
+"""
+
+def sendEmailMessage(content):
+    import smtplib
+    from email.mime.text import MIMEText
+
+    smtp_server = "smtp.qq.com"
+    smtp_port = 465
+
+    sender_email = "xxxx@qq.com"
+    sender_password = ""
+
+    receiver_email = ""
+
+    message = MIMEText(content, 'plain', 'utf-8')
+    message["Subject"] = "告警"
+    message["From"] = sender_email
+    message["To"] = receiver_email
+
+    with smtplib.SMTP(smtp_server, smtp_port) as smtp:
+        smtp.starttls()
+        smtp.login(sender_email, sender_password)
+        smtp.sendmail(sender_email, receiver_email, message.as_string())
 
 
 if __name__ == '__main__':
-    sendDingMessage(data())
+    # sendDingMessage(data())
+    sendEmailMessage(data())
