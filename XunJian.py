@@ -66,7 +66,7 @@ def data():
     content+=getSystemInfo()+"\n"+"-"*20+"\n"+getMemInfo()+"\n"+"-"*20+"\n"+getDiskInfo()+"\n"+"-"*20+"\n"+getCPUInfo()+"\n"
     return content
 
-"""
+
 def sendDingMessage(content):
     import requests
     import json
@@ -96,7 +96,7 @@ def sendDingMessage(content):
     info = requests.post(url=webhook, data=message_json, headers=header)
     # 打印返回的结果
     # print(info.text)
-"""
+
 
 def sendEmailMessage(content):
     import smtplib
@@ -122,5 +122,5 @@ def sendEmailMessage(content):
 
 
 if __name__ == '__main__':
-    # sendDingMessage(data())
+    sendDingMessage(data())
     sendEmailMessage(data())
